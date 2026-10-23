@@ -16,7 +16,8 @@
 .app {
   background: rgb(var(--ground));
   min-height: 844px;
-  width: 390px;
+  min-height: 100dvh;
+  width: 100%;
   color: rgb(var(--fg));
   font-family: ui-rounded,system-ui,-apple-system,sans-serif;
   font-size: 16px;
@@ -49,15 +50,25 @@
 
 .app button svg {width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-.board {flex:1;background:rgb(var(--paper));border:1px solid rgb(var(--line));border-radius:20px;overflow:hidden;min-height:470px}
+.app button[aria-disabled="true"] {opacity:.45;cursor:default}
 
-.board svg {display:block;width:100%;height:100%}
+.board {flex:1;background:rgb(var(--paper));border:1px solid rgb(var(--line));border-radius:20px;overflow:hidden;min-height:470px;position:relative}
+
+.board canvas {position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:crosshair;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+
+.hint {position:absolute;inset:0;margin:0;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;color:rgb(var(--ink));font-size:16px;line-height:24px;pointer-events:none}
+
+.demo-note {margin:0;font-size:14px;line-height:20px;font-weight:500;color:rgb(var(--muted))}
+
+.save-error {margin:0;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;line-height:20px;color:rgb(var(--fg));background:rgb(var(--raised));border-radius:10px;padding:10px 12px}
+
+.save-error .btn-secondary {flex:none}
 
 .tools {background:rgb(var(--surface));border:1px solid rgb(var(--line));border-radius:20px;padding:12px 14px 14px;display:flex;flex-direction:column;gap:12px}
 
 .crayons {display:flex;justify-content:space-between;align-items:flex-end;height:64px}
 
-.cr {width:40px;height:56px;border-radius:20px 20px 6px 6px;position:relative;border:0;padding:0}
+.cr {width:44px;height:56px;border-radius:20px 20px 6px 6px;position:relative;border:0;padding:0}
 
 .cr:after {content:"";position:absolute;left:0;right:0;bottom:10px;height:14px;background:rgba(255,255,255,.55)}
 

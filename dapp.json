@@ -1,5 +1,5 @@
 {
-  "description": "A shared drawing board for kids",
+  "description": "A playful drawing board with crayons and stamps",
   "category": "other",
   "icon": {
     "emoji": "🖍️"
@@ -8,5 +8,25 @@
   "governance": {
     "preset": "you_or_the_group"
   },
-  "tests": []
+  "tests": [
+    {
+      "name": "Board opens",
+      "path": "/",
+      "expectSelector": "canvas[data-board]",
+      "expectText": "Pick a crayon and start drawing"
+    },
+    {
+      "name": "Tools present",
+      "path": "/",
+      "expectText": "Save picture"
+    },
+    {
+      "id": "demo-drawing",
+      "name": "Demo drawing",
+      "path": "/?demo=1",
+      "expectText": "Staging demo",
+      "visual": true,
+      "impact": ["public/**"]
+    }
+  ]
 }
