@@ -55,6 +55,16 @@ module.exports = {
         danger: token('danger'),
         'on-danger': token('on-danger'),
         focus: token('focus'), // the keyboard focus ring
+        paper: token('paper'), // the sheet the drawing sits on (white in both looks)
+        ink: token('ink'), // text on the sheet (the same in both looks)
+        // The seven crayon colours: the subject's own, identical in both looks.
+        red: token('red'),
+        orange: token('orange'),
+        yellow: token('yellow'),
+        green: token('green'),
+        blue: token('blue'),
+        purple: token('purple'),
+        brown: token('brown'),
       },
       // The type scale: four sizes, and nothing in between.
       fontSize: {

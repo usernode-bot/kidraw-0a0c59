@@ -58,22 +58,11 @@ of this applies.
 
 ## Starter template
 
-The screen this app currently ships — the "Starter template" hero with
-the app's thumbnail tile and the plain-English note on how the app gets
-built (by asking Homeroom bot) — is placeholder content from the
-Homeroom starter template, not product intent.
-
-When the user asks for their first real feature, REPLACE the template
-screen rather than building alongside it:
-
-- remove the `usernode-starter-notice@1` block in `public/index.html`
-  (both sentinel comments and everything between them),
-- rewrite `README.md` to describe the actual app.
-
-Keep the `usernode-dev-console@1` forwarder `<script>` when rewriting the
-HTML — that block is platform infrastructure, not template content. So is
-the bridge `<script>`. The design kit is not placeholder either: build the
-real app with it, and fill in "## Design" below.
+The starter's own screen and placeholder note have been replaced by Kidraw's
+board (the first version removed the `usernode-starter-notice@1` block and
+rewrote `README.md`). The `usernode-dev-console@1` forwarder, the bridge
+`<script>` and the design kit stay: they are platform infrastructure, not
+template content.
 
 The screen has a light and a dark look and follows the viewer's Homeroom
 theme, switching live when they change it: the theme `<script>` right after
@@ -95,10 +84,12 @@ tables you've marked private), etc.
 
 ## About Kidraw
 
-A shared drawing board for kids
-
-_(add a sentence or two more of product context here so Claude Code has a
-shared understanding of what this app is for)_
+A playful drawing board with crayons and stamps. One screen: a sheet of
+paper, seven crayons, a brush plus star and heart stamps, four sizes, undo,
+clear and Save picture. A drawing lives only in the open page and leaves as
+a PNG saved to the device; **nothing is stored on the server**, and there are
+no tables or routes for drawings. Drawing together live and a shared gallery
+are deliberately not in this version.
 
 ## Your people's data
 
@@ -114,14 +105,21 @@ about, add it to `SKIP`. Keep the file and its mount in `server.js`.
 This app's look. The first real version fills in the blanks; every later
 change follows it, and updates it when a request changes the look on purpose.
 
-- **Palette:** _(name the accent, any second colour and the neutrals, e.g.
-  "accent: tomato red; second: basil green; neutrals: warm greys")_
-- **Signature element:** _(the one thing on screen drawn from this app's
-  subject, which no other app would have)_
-- **Type scale:** `text-title`, `text-heading`, `text-body`, `text-small`
-  _(change their sizes in `tailwind.config.js` if you must, not their number)_
-- **One fixed look:** _(only for an app drawn as its own scene, such as a
-  game: which look, and why. Otherwise delete this line.)_
+- **Palette:** accent: burnt orange (`--accent`), carrying the selected tool
+  and size and the one filled button; neutrals: warm paper creams (`--ground`,
+  `--surface`, `--raised`, `--line`); text: warm near-black `--fg` and warm
+  grey `--muted`; the sheet `--paper` is white in both looks, with `--ink`
+  as the pencil grey of text on it; and the seven
+  crayon colours (`--red`, `--orange`, `--yellow`, `--green`, `--blue`,
+  `--purple`, `--brown`), the same in both looks like a real box of crayons.
+  A saved picture is white paper regardless of the look on screen.
+- **Signature element:** the crayon row: seven chunky rounded tips with a
+  paper wrapper band, the chosen one standing taller inside a ring. Everything
+  else is small line icons and paper-like rounded surfaces.
+- **Type scale:** `text-title`, `text-heading`, `text-body`, `text-small`,
+  set in a rounded system face (`ui-rounded`), which suits crayons and a
+  sheet of paper. The screen uses the 28px name, 16px body and 14px labels
+  the drawn screen sets; change sizes in `tailwind.config.js` if ever needed.
 
 The kit is in `styles/tailwind-input.css`: colour tokens with a light and
 a dark value (named in `tailwind.config.js`), and a few components
@@ -151,6 +149,17 @@ Re-theme by changing the token values there, keeping every text pair at
 
 ## App-specific conventions
 
-_(optional — e.g. "all currency values stored as integer cents, not
-floats"; "the `posts` table is append-only"; "avoid adding new
-dependencies"; etc.)_
+- A drawing is an array of marks in `public/app.js`: `{type:'stroke', color,
+  size, points}` or `{type:'stamp', shape, color, size, x, y}`. Points and
+  stamp positions are fractions of a fixed 358:470 drawing frame (`frameRect`
+  fits it inside the board and centres it), never pixels, so a resize or a
+  rotation repaints the same drawing with the same proportions. Keep that:
+  the saved picture and the screen are painted from the same array.
+- Colours painted on the canvas are read from the kit's tokens
+  (`getComputedStyle(document.documentElement)`), never written as hex.
+  Crayon colours stay the same in both looks by design.
+- Clear is an undoable entry (`{type:'clear', before}`), not a delete of the
+  marks: Undo after Clear restores the whole drawing. There is no
+  confirmation.
+- Nothing is stored anywhere: no tables, no local storage, no saved
+  preferences. `?demo=1` paints a fixed scene but writes nothing.

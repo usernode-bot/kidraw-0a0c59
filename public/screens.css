@@ -1,0 +1,104 @@
+/* The screens the spec drew, carried over by the platform before the first
+   version was built (screen 1 is public/index.html's main screen; screen 2,
+   if any, its <template data-spec-screen="2">). Colours are the design kit's
+   tokens, rgb(var(--accent)), so they follow the light and the dark look. */
+
+/* Each screen is one centred column: the phone width it was drawn at grows
+   to a readable column on a wider window, never rows and buttons stretched
+   across the window. Remove this only for an app that fills the window by
+   design, such as a map. */
+[data-spec-screen] {
+  width: 100%;
+  max-width: 42rem;
+  margin-inline: auto;
+}
+
+.app {
+  background: rgb(var(--ground));
+  /* One screen: the board takes what is left between the header and the
+     tools card, so Save picture stays in the viewport without scrolling. */
+  height: 100dvh;
+  width: 100%;
+  color: rgb(var(--fg));
+  font-family: ui-rounded,system-ui,-apple-system,sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 12px 16px 20px;
+  gap: 12px;
+}
+
+.app * {box-sizing:border-box}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+}
+
+.name {font-size:28px;line-height:36px;font-weight:700;letter-spacing:-0.5px;margin:0}
+
+.acts {display:flex;gap:8px}
+
+.btn-secondary,.btn-primary {display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;min-width:44px;padding:0 14px;border-radius:10px;font:500 16px/24px ui-rounded,system-ui,sans-serif}
+
+.btn-secondary {border:1px solid rgb(var(--line));background:rgb(var(--surface));color:rgb(var(--fg))}
+
+.btn-primary {border:0;background:rgb(var(--accent));color:rgb(var(--on-accent));font-weight:600;width:100%}
+
+.app button svg {width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.app button[aria-disabled="true"] {opacity:.45;cursor:default}
+
+.board {flex:1;align-self:center;width:auto;max-width:100%;aspect-ratio:358/470;background:rgb(var(--paper));border:1px solid rgb(var(--line));border-radius:20px;overflow:hidden;min-height:320px;position:relative}
+
+.board canvas {position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:crosshair;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+
+.hint {position:absolute;inset:0;margin:0;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;color:rgb(var(--ink));font-size:16px;line-height:24px;pointer-events:none}
+
+.demo-note {margin:0;font-size:14px;line-height:20px;font-weight:500;color:rgb(var(--muted))}
+
+.save-error {margin:0;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;line-height:20px;color:rgb(var(--fg));background:rgb(var(--raised));border-radius:10px;padding:10px 12px}
+
+.save-error .btn-secondary {flex:none}
+
+.tools {width:100%;max-width:420px;margin-inline:auto;background:rgb(var(--surface));border:1px solid rgb(var(--line));border-radius:20px;padding:12px 14px 14px;display:flex;flex-direction:column;gap:12px}
+
+.crayons {display:flex;justify-content:space-between;align-items:flex-end;height:64px}
+
+/* On a wide window the crayons keep the tight row they have on a phone
+   instead of drifting apart across the card. */
+@media (min-width:480px) {
+  .crayons {justify-content:center;gap:8px}
+}
+
+.cr {width:44px;height:56px;border-radius:20px 20px 6px 6px;position:relative;border:0;padding:0}
+
+.cr:after {content:"";position:absolute;left:0;right:0;bottom:10px;height:14px;background:rgba(255,255,255,.55)}
+
+.cr.on {height:64px;outline:3px solid rgb(var(--fg));outline-offset:2px}
+
+.row {display:flex;align-items:center;justify-content:space-between}
+
+.sl {font-size:14px;line-height:20px;color:rgb(var(--muted));font-weight:500}
+
+.seg {display:flex;gap:6px}
+
+.t {width:52px;height:44px;border-radius:12px;border:0;background:rgb(var(--raised));color:rgb(var(--fg));display:flex;align-items:center;justify-content:center}
+
+.t svg {width:24px!important;height:24px!important}
+
+.t.on {background:rgb(var(--accent));color:rgb(var(--on-accent))}
+
+.dots {display:flex;gap:10px;align-items:center}
+
+.d {width:44px;height:44px;border-radius:12px;border:0;background:rgb(var(--raised));display:flex;align-items:center;justify-content:center}
+
+.d i {display:block;border-radius:50%;background:rgb(var(--fg))}
+
+.d.on {background:rgb(var(--accent))}
+
+.d.on i {background:rgb(var(--on-accent))}
