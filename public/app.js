@@ -22,6 +22,11 @@
 
   var SIZES = [4, 10, 18, 28];
   var STAMP_FACTOR = 3;
+  // The sheet the drawing is laid out on, the phone's 358:470. A wider or
+  // taller board centres this frame instead of stretching it sideways, so
+  // the same drawing keeps its proportions at every size.
+  var FRAME_W = 358;
+  var FRAME_H = 470;
   var isDemo = new URLSearchParams(location.search).get('demo') === '1';
 
   var marks = [];
@@ -76,10 +81,19 @@
     c.closePath();
   }
 
-  function drawMark(c, mark, w, h) {
+  // The drawing frame, fitted inside the board and centred: one scale for
+  // both axes, so a circle stays a circle whatever the board's proportions.
+  function frameRect(w, h) {
+    var s = Math.min(w / FRAME_W, h / FRAME_H);
+    var fw = FRAME_W * s;
+    var fh = FRAME_H * s;
+    return { x: (w - fw) / 2, y: (h - fh) / 2, w: fw, h: fh };
+  }
+
+  function drawMark(c, mark, f) {
     if (mark.type === 'stroke') {
       var pts = mark.points.map(function (p) {
-        return { x: p.x * w, y: p.y * h };
+        return { x: f.x + p.x * f.w, y: f.y + p.y * f.h };
       });
       c.strokeStyle = mark.color;
       c.fillStyle = mark.color;
@@ -107,19 +121,20 @@
       var r = (mark.size * STAMP_FACTOR) / 2;
       c.fillStyle = mark.color;
       c.beginPath();
-      if (mark.shape === 'star') starPath(c, mark.x * w, mark.y * h, r);
-      else heartPath(c, mark.x * w, mark.y * h, r);
+      if (mark.shape === 'star') starPath(c, f.x + mark.x * f.w, f.y + mark.y * f.h, r);
+      else heartPath(c, f.x + mark.x * f.w, f.y + mark.y * f.h, r);
       c.fill();
     }
   }
 
   function paintMarks(c, list, w, h) {
+    var f = frameRect(w, h);
     for (var i = 0; i < list.length; i++) {
       var mark = list[i];
       if (mark.type === 'clear') {
         c.clearRect(0, 0, w, h);
       } else {
-        drawMark(c, mark, w, h);
+        drawMark(c, mark, f);
       }
     }
   }
@@ -198,10 +213,11 @@
   // ── Pointer input ───────────────────────────────────────────────────────
   function pointFromEvent(e) {
     var r = canvas.getBoundingClientRect();
-    return {
-      x: r.width ? (e.clientX - r.left) / r.width : 0,
-      y: r.height ? (e.clientY - r.top) / r.height : 0,
-    };
+    var f = frameRect(r.width, r.height);
+    var x = f.w ? (e.clientX - r.left - f.x) / f.w : 0;
+    var y = f.h ? (e.clientY - r.top - f.y) / f.h : 0;
+    // A tap in the paper outside the frame draws at its nearest edge.
+    return { x: Math.min(1, Math.max(0, x)), y: Math.min(1, Math.max(0, y)) };
   }
 
   function hideSaveError() {

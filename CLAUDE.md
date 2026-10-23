@@ -151,9 +151,10 @@ Re-theme by changing the token values there, keeping every text pair at
 
 - A drawing is an array of marks in `public/app.js`: `{type:'stroke', color,
   size, points}` or `{type:'stamp', shape, color, size, x, y}`. Points and
-  stamp positions are fractions of the board, never pixels, so a resize or a
-  rotation repaints the same drawing. Keep that: the saved picture and the
-  screen are painted from the same array.
+  stamp positions are fractions of a fixed 358:470 drawing frame (`frameRect`
+  fits it inside the board and centres it), never pixels, so a resize or a
+  rotation repaints the same drawing with the same proportions. Keep that:
+  the saved picture and the screen are painted from the same array.
 - Colours painted on the canvas are read from the kit's tokens
   (`getComputedStyle(document.documentElement)`), never written as hex.
   Crayon colours stay the same in both looks by design.
