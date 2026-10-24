@@ -26,7 +26,13 @@
       "path": "/?demo=1",
       "expectText": "Staging demo",
       "visual": true,
-      "impact": ["public/**"]
+      "impact": [
+        "public/**"
+      ]
     }
-  ]
+  ],
+  "visibility": {
+    "build": "public",
+    "view": "public"
+  }
 }
