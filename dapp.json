@@ -2,6 +2,7 @@
   "description": "A playful drawing board with crayons and stamps",
   "category": "other",
   "icon": {
+    "image": "brand/icon.png",
     "emoji": "🖍️"
   },
   "secrets": [],
